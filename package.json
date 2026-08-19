@@ -1,0 +1,13 @@
+{
+  "name": "dsh-exptech",
+  "version": "1.0.0",
+  "description": "ExpTechTW DSH Agent Preset",
+  "keywords": [
+    "dsh",
+    "exptech",
+    "agent",
+    "preset"
+  ],
+  "author": "ExpTechTW",
+  "license": "AGPL-3.0"
+}

@@ -53,7 +53,7 @@
 dsh plugin --profile web add https://github.com/ExpTechTW/dsh-exptech/archive/refs/heads/main.tar.gz
 ```
 
-*(註：請根據實際發佈版本或分支調整 URL)*
+*(註：安裝後，Agent 將以 `dsh-exptech` 名稱載入功能。)*
 
 > [!IMPORTANT]
 > 安裝完成後，請從 DSH 模式選單中選擇 **「ExpTechTW 模式」** 來開啟新的對話。
