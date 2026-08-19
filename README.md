@@ -20,43 +20,64 @@
 
 ---
 
-## 📁 內容結構
-
-本儲存庫包含一個完整的 `exptech/` 模式目錄：
-
-| 路徑 | 說明 |
-| :--- | :--- |
-| `agent.cordis.yml` | 基於 Cordis 標準的 Agent 配置，強化了 ExpTech 人設與組織技能。 |
-| `preset.yml` | 模式的顯示名稱與簡介。 |
-| `skills/exptech-org/` | **組織概覽技能**：包含專案地圖、開發慣例（mise、commit 規範）與協作流程。 |
-| `skills/exptech-apis/` | **API 知識庫技能**：整合了地震、氣象、Tiles 等公共 API 端點、區域規則與官方文件入口。 |
-
----
-
-## 📥 安裝指南
+## 📥 安裝 (Installation)
 
 您可以選擇以下任一方式安裝：
 
-### 方法 A：直接複製 (推薦)
-將 `exptech/` 資料夾整個複製到您的 DSH 本地模式目錄：
-`${DSH_HOME:-$HOME/.dsh}/.agent-presets/exptech/`
-
-### 方法 B：使用 DSH 創造模式
-1. 在 DSH 中使用「創造模式」啟動。
-2. 執行命令：`preset_copy("standard", "exptech")` 建立骨架。
-3. 將本儲存庫中的檔案覆蓋至生成的目錄中。
-
-### 方法 C：透過 DSH Plugin 安裝
-如果您使用的是支援插件系統的 DSH 環境，可執行以下簡化指令直接安裝：
+### 透過 GitHub 安裝 (推薦)
+如果您使用的是支援插件系統的 DSH 環境，可執行以下簡化指令：
 
 ```bash
 dsh plugin --profile web add -w github:ExpTechTW/dsh-exptech
 ```
 
-*(註：安裝後，Agent 將以 `dsh-exptech` 名稱載入功能。)*
+### 透過本地目錄安裝
+如果您已將本儲存庫下載至本地，可使用 `link:` 語法安裝：
+
+```bash
+dsh plugin --profile web add -w link:/您的/本地/路徑/dsh-exptech
+```
+
+### 其他方式
+- **使用 DSH 創造模式**：在 DSH 中執行 `preset_copy("standard", "exptech")` 後手動覆蓋檔案。
+- **直接複製**：將 `exptech/` 資料夾複製到您的 DSH 本地模式目錄：
+  `${DSH_HOME:-$HOME/.dsh}/.agent-presets/exptech/`
 
 > [!IMPORTANT]
-> 安裝完成後，請從 DSH 模式選單中選擇 **「ExpTechTW 模式」** 來開啟新的對話。
+> 安裝完成後，請務必執行下方的 **「重啟」** 步驟以確保模式生效。
+
+---
+
+## 🔄 重啟 (Restart)
+
+安裝完成後，請重新啟動 DSH Web Profile 以載入新模式：
+
+```bash
+dsh --profile web
+```
+
+---
+
+## 📂 開啟 (Open)
+
+安裝並重啟後，您可以在 GUI 中透過以下路徑開啟：
+
+**設定 $\to$ 模式選單 $\to$ 「ExpTechTW 模式」**
+
+---
+
+## 📁 套件結構 (Structure)
+
+本模式包含以下目錄結構：
+
+```text
+exptech/
+├── agent.cordis.yml    # 基於 Cordis 標準的 Agent 配置
+├── preset.yml          # 模式顯示名稱與簡介
+└── skills/
+    ├── exptech-org/    # 組織概覽技能 (專案地圖、開發慣例、協作流程)
+    └── exptech-apis/   # API 知識庫技能 (地震、氣象、Tiles 等端點目錄)
+```
 
 ---
 
