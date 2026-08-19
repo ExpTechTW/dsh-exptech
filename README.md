@@ -24,23 +24,42 @@
 
 您可以選擇以下任一方式安裝：
 
-### 透過 GitHub 安裝 (推薦)
-如果您使用的是支援插件系統的 DSH 環境，可執行以下簡化指令：
+### 1. 透過 GitHub 直接安裝 (推薦)
+如果您使用的是支援插件系統的 DSH 環境，直接執行：
 
 ```bash
 dsh plugin --profile web add -w github:ExpTechTW/dsh-exptech
 ```
 
-### 透過本地目錄安裝
-如果您已將本儲存庫下載至本地，可使用 `link:` 語法安裝：
+### 2. 透過 Git Clone 與本地連結 (開發者推薦)
+如果您希望在本地進行開發或需要手動控制：
+
+```bash
+# 1. 克隆儲存庫
+git clone https://github.com/ExpTechTW/dsh-exptech.git
+cd dsh-exptech
+
+# 2. 安裝依賴 (如有)
+pnpm install
+
+# 3. 使用本地路徑安裝至 DSH
+# Windows (PowerShell)
+dsh plugin --profile web add -w link:$PWD
+
+# macOS / Linux (Bash)
+dsh plugin --profile web add -w link:$(pwd)
+```
+
+### 3. 透過本地目錄安裝 (手動)
+如果您已下載檔案，可使用 `link:` 語法：
 
 ```bash
 dsh plugin --profile web add -w link:/您的/本地/路徑/dsh-exptech
 ```
 
-### 其他方式
+### 4. 其他方式
 - **使用 DSH 創造模式**：在 DSH 中執行 `preset_copy("standard", "exptech")` 後手動覆蓋檔案。
-- **直接複製**：將 `exptech/` 資料夾複製到您的 DSH 本地模式目錄：
+- **直接複製**：將本儲存庫的所有檔案複製到您的 DSH 本地模式目錄：
   `${DSH_HOME:-$HOME/.dsh}/.agent-presets/exptech/`
 
 > [!IMPORTANT]
@@ -50,7 +69,10 @@ dsh plugin --profile web add -w link:/您的/本地/路徑/dsh-exptech
 
 ## 🔄 重啟 (Restart)
 
-安裝完成後，請重新啟動 DSH Web Profile 以載入新模式：
+> [!IMPORTANT]
+> 安裝完成後，**必須**重新啟動 DSH Web Profile 才能在選單中看到新模式。
+
+請執行以下指令：
 
 ```bash
 dsh --profile web
@@ -60,9 +82,16 @@ dsh --profile web
 
 ## 📂 開啟 (Open)
 
-安裝並重啟後，您可以在 GUI 中透過以下路徑開啟：
+安裝並重啟後，請在 DSH Web GUI 中透過以下路徑切換模式：
 
 **設定 $\to$ 模式選單 $\to$ 「ExpTechTW 模式」**
+
+---
+
+## ❓ 常見問題 (FAQ)
+
+**Q: 安裝後在模式選單找不到「ExpTechTW 模式」？**
+**A:** 請檢查您是否已完成「重啟」步驟。DSH 需要重新啟動後才會讀取新的預設模式配置。
 
 ---
 
@@ -71,12 +100,11 @@ dsh --profile web
 本模式包含以下目錄結構：
 
 ```text
-exptech/
 ├── agent.cordis.yml    # 基於 Cordis 標準的 Agent 配置
 ├── preset.yml          # 模式顯示名稱與簡介
-└── skills/
-    ├── exptech-org/    # 組織概覽技能 (專案地圖、開發慣例、協作流程)
-    └── exptech-apis/   # API 知識庫技能 (地震、氣象、Tiles 等端點目錄)
+├── skills/             # 內建技能
+│   ├── exptech-org/    # 組織概覽技能 (專案地圖、開發慣例、協作流程)
+│   └── exptech-apis/   # API 知識庫技能 (地震、氣象、Tiles 等端點目錄)
 ```
 
 ---

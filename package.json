@@ -9,5 +9,9 @@
     "preset"
   ],
   "author": "ExpTechTW",
-  "license": "AGPL-3.0"
+  "license": "AGPL-3.0",
+  "scripts": {
+    "install": "pnpm install",
+    "dev": "echo 'Development mode - no build required'"
+  }
 }
