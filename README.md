@@ -47,10 +47,10 @@
 3. 將本儲存庫中的檔案覆蓋至生成的目錄中。
 
 ### 方法 C：透過 DSH Plugin 安裝
-如果您使用的是支援插件系統的 DSH 環境，可執行以下命令直接安裝：
+如果您使用的是支援插件系統的 DSH 環境，可執行以下簡化指令直接安裝：
 
 ```bash
-dsh plugin --profile web add https://github.com/ExpTechTW/dsh-exptech/archive/refs/heads/main.tar.gz
+dsh plugin --profile web add -w github:ExpTechTW/dsh-exptech
 ```
 
 *(註：安裝後，Agent 將以 `dsh-exptech` 名稱載入功能。)*
