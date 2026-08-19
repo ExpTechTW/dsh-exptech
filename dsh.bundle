@@ -3,5 +3,5 @@
   "version": "1.0.0",
   "type": "preset",
   "description": "ExpTechTW Agent Preset",
-  "entry": "exptech/agent.cordis.yml"
+  "entry": "agent.cordis.yml"
 }
