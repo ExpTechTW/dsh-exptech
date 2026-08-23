@@ -3,86 +3,79 @@
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![Org: ExpTechTW](https://img.shields.io/badge/Org-ExpTechTW-orange)](https://github.com/ExpTechTW)
 
-為 [ExpTechTW (探索科技)](https://github.com/ExpTechTW) 公開組織量身打造的 **DeepSeek Harness (DSH) Agent 預設模式 (Preset)**。
+為 [ExpTechTW (探索科技)](https://github.com/ExpTechTW) 量身打造的 **"ExpTechTW 模式"agent (DeepSeek Harness Agent Preset)**。
 
-我們的目標是：**「讓開發 ExpTech 專案變得更簡單、更高效」**。
+這不只是一個插件，它是一個完整的 **「模式 (Mode)」**。當您啟用此模式時，DSH Agent 會立即轉變為專精於 ExpTechTW 組織知識、API 規範與開發慣例的專家。
 
 ---
 
-## ✨ 核心價值
+## 🎯 核心價值
 
-透過整合組織內的慣例、API 文檔與專案地圖，本模式能讓 DSH Agent 具備以下能力：
+透過整合組織內的慣例、API 文檔與專案地圖，此模式能讓 DSH Agent 具備：
 
-- 🗺️ **專案導航**：快速定位組織內的 196+ 個公開倉庫（DPIP、TREM、API 等）。
+- 🗺️ **專案導航**：快速定位組織內的 196+ 個公開倉庫。
 - 🛠️ **標準化開發**：遵循組織指定的 `mise` 工具鏈、Commit 格式與文件分工。
-- 📡 **API 專家**：內建整理好的公共 API 端點目錄（地震 EEW/RTS、氣象 v5、Tiles、裝置通知等），無需手動查閱大量文檔。
+- 📡 **API 專家**：內建地震 EEW/RTS、氣象 v5、Tiles 等 API 端點目錄。
 - 🤝 **組織意識**：具備 zh-TW 優先的語言偏好與強烈的組織協作意識。
 
 ---
 
-## 📥 安裝 (Installation)
+## 📥 如何啟用「ExpTechTW 模式」 (推薦方式)
 
-您可以選擇以下任一方式安裝：
+**如果您希望在 DSH Web GUI 的「模式選單」中看到新選項，請使用以下任一方式。**
 
-### 1. 透過 GitHub 直接安裝 (推薦)
-如果您使用的是支援插件系統的 DSH 環境，直接執行：
+### 1. 手動複製模式檔案 (最穩定)
 
-```bash
-dsh plugin --profile web add -w github:ExpTechTW/dsh-exptech
-```
-
-### 2. 透過 Git Clone 與本地連結 (開發者推薦)
-如果您希望在本地進行開發或需要手動控制：
+這是最直接的方式，將模式定義直接放入 DSH 的預設目錄中：
 
 ```bash
 # 1. 克隆儲存庫
 git clone https://github.com/ExpTechTW/dsh-exptech.git
 cd dsh-exptech
 
-# 2. 安裝依賴 (如有)
-pnpm install
-
-# 3. 使用本地路徑安裝至 DSH
+# 2. 將檔案複製到您的 DSH 預設目錄
 # Windows (PowerShell)
-dsh plugin --profile web add -w link:$PWD
+Copy-Item -Path "*" -Destination "$env:USERPROFILE\.dsh\.agent-presets\exptech" -Recurse -Force
 
 # macOS / Linux (Bash)
-dsh plugin --profile web add -w link:$(pwd)
+cp -r . ~/.dsh/.agent-presets/exptech
 ```
 
-### 3. 透過本地目錄安裝 (手動)
-如果您已下載檔案，可使用 `link:` 語法：
+### 2. 使用 DSH 內部指令
 
-```bash
-dsh plugin --profile web add -w link:/您的/本地/路徑/dsh-exptech
-```
+如果您已經在 DSH 環境中，可以使用以下步驟：
 
-### 4. 其他方式
-- **使用 DSH 創造模式**：在 DSH 中執行 `preset_copy("standard", "exptech")` 後手動覆蓋檔案。
-- **直接複製**：將本儲存庫的所有檔案複製到您的 DSH 本地模式目錄：
-  `${DSH_HOME:-$HOME/.dsh}/.agent-presets/exptech/`
-
-> [!IMPORTANT]
-> 安裝完成後，請務必執行下方的 **「重啟」** 步驟以確保模式生效。
+1. 在 DSH 控制台執行：`preset_copy("standard", "exptech")`
+2. 將本儲存庫的內容覆蓋至該目錄。
 
 ---
 
-## 🔄 重啟 (Restart)
+## 🛠️ 進階：作為「插件 (Plugin)」安裝
 
-> [!IMPORTANT]
-> 安裝完成後，**必須**重新啟動 DSH Web Profile 才能在選單中看到新模式。
+如果您**不想切換模式**，只想讓目前的 Agent 擁有 ExpTechTW 的能力（例如新增 API 工具或技能），請使用傳統的插件安裝方式：
+
+```bash
+dsh plugin --profile web add -w github:ExpTechTW/dsh-exptech
+```
+> [!NOTE]
+> **使用此方式安裝後，模式選單不會出現新選項。** 您只能透過呼叫特定的技能或工具來使用其功能。
+
+---
+
+## 🔄 重啟 (Required)
+
+**無論使用哪種方式安裝，都必須重新啟動 DSH Web Profile 才能生效！**
 
 請執行以下指令：
-
 ```bash
 dsh --profile web
 ```
 
 ---
 
-## 📂 開啟 (Open)
+## 📂 開啟與切換 (Usage)
 
-安裝並重啟後，請在 DSH Web GUI 中透過以下路徑切換模式：
+重啟後，請在 DSH Web GUI 中切換：
 
 **設定 $\to$ 模式選單 $\to$ 「ExpTechTW 模式」**
 
@@ -90,30 +83,25 @@ dsh --profile web
 
 ## ❓ 常見問題 (FAQ)
 
-**Q: 安裝後在模式選單找不到「ExpTechTW 模式」？**
-**A:** 請檢查您是否已完成「重啟」步驟。DSH 需要重新啟動後才會讀取新的預設模式配置。
+**Q: 我用 `dsh plugin add` 安裝了，但模式選單沒出現「ExpTechTW 模式」？**
+**A:** 因為 `dsh plugin add` 是將其安裝為「插件 (Plugin)」，這只會增加 Agent 的能力，不會改變其「身份」。若要顯示新模式，請參考上方「如何啟用模式」章節。
+
+**Q: 「插件 (Plugin)」與「模式 (Mode)」有什麼差別？**
+**A:** 
+- **插件**：像是在您的工具箱裡增加了一把新扳手。您可以用它，但您的身份沒變。
+- **模式**：像是換了一個專業身份（例如從「一般維修工」變成「ExpTech 專屬工程師」）。換了身份後，您不僅擁有新的工具，還會自動遵循相關的規範與知識。
 
 ---
 
 ## 📁 套件結構 (Structure)
 
-本模式包含以下目錄結構：
-
 ```text
 ├── agent.cordis.yml    # 基於 Cordis 標準的 Agent 配置
 ├── preset.yml          # 模式顯示名稱與簡介
 ├── skills/             # 內建技能
-│   ├── exptech-org/    # 組織概覽技能 (專案地圖、開發慣例、協作流程)
-│   └── exptech-apis/   # API 知識庫技能 (地震、氣象、Tiles 等端點目錄)
+│   ├── exptech-org/    # 組織概覽技能
+│   └── exptech-apis/   # API 知識庫技能
 ```
-
----
-
-## 🚀 使用範例
-
-- **探索專案**：「幫我找一下 ExpTechTW 裡關於地震數據處理的專案有哪些？」(觸發 `exptech-org`)
-- **呼叫 API**：「我想用 API 取得最新的地震速報 (EEW)，請告訴我端點與參數。」(觸發 `exptech-apis`)
-- **遵循規範**：「幫我寫一個關於修改 API 邏輯的 commit message。」(Agent 會自動遵循組織規範)
 
 ---
 

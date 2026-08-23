@@ -1,7 +1,20 @@
 {
   "name": "dsh-exptech",
   "version": "1.0.0",
+  "dsh": {
+    "bundle": {
+      "name": "dsh-exptech",
+      "version": "1.0.0",
+      "entry": "agent.cordis.yml"
+    }
+  },
   "description": "ExpTechTW DSH Agent Preset",
+  "files": [
+    "dsh.bundle",
+    "agent.cordis.yml",
+    "preset.yml",
+    "skills"
+  ],
   "keywords": [
     "dsh",
     "exptech",

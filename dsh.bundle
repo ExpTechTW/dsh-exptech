@@ -1,7 +1,5 @@
 {
   "name": "dsh-exptech",
   "version": "1.0.0",
-  "type": "preset",
-  "description": "ExpTechTW Agent Preset",
   "entry": "agent.cordis.yml"
 }
