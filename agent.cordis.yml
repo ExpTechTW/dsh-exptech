@@ -94,6 +94,9 @@
 # are discovered from this preset's root and exposed to this preset's agents.
 - id: skill-filesystem
   name: '@deepseek-ai/dsh-skill-filesystem'
+  config:
+    customSkillDirs:
+      - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('skills/', baseUrl))"
 
 - id: tool-skill
   name: '@deepseek-ai/dsh-tool-skill'
@@ -316,6 +319,9 @@
 # are discovered from this preset's root and exposed to this preset's agents.
 - id: skill-filesystem
   name: '@deepseek-ai/dsh-skill-filesystem'
+  config:
+    customSkillDirs:
+      - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('skills/', baseUrl))"
 
 - id: tool-skill
   name: '@deepseek-ai/dsh-tool-skill'
