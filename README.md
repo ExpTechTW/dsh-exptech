@@ -20,12 +20,24 @@
 
 ---
 
-## 📥 如何啟用「ExpTechTW 模式」 (推薦方式)
+## 🚀 安裝方式：模式 (Mode) vs. 插件 (Plugin)
 
-**如果您希望在 DSH Web GUI 的「模式選單」中看到新選項，請使用以下任一方式。**
+根據您的需求，您可以選擇將 ExpTechTW 的能力以「模式」或「插件」的形式加入 DSH。
 
-### 1. 手動複製模式檔案 (最穩定)
+| 特性 | **模式 (Mode / Agent Preset)** | **插件 (Plugin)** |
+| :--- | :--- | :--- |
+| **主要用途** | 改變 Agent 的**身份**與核心設定 (Persona, Instructions) | 增加 Agent 的**能力** (Tools, Skills) |
+| **GUI 表現** | 出現在「模式選單」中可直接切換 | 不會改變選單，僅增加可用工具 |
+| **安裝難度** | 較高 (需操作檔案系統) | 極低 (單行指令) |
+| **推薦情境** | 您想要完全體驗 ExpTechTW 的開發體驗 | 您只想在現有任務中偶爾使用其 API 或知識 |
 
+---
+
+### 📥 方式 1：啟用「ExpTechTW 模式」 (推薦)
+
+如果您希望在 DSH Web GUI 的「模式選單」中看到新選項，請使用以下任一方式將本儲存庫部署為 **Agent Preset**。
+
+#### A. 手動部署 (最穩定)
 這是最直接的方式，將模式定義直接放入 DSH 的預設目錄中：
 
 ```bash
@@ -41,8 +53,7 @@ Copy-Item -Path "*" -Destination "$env:USERPROFILE\.dsh\.agent-presets\exptech" 
 cp -r . ~/.dsh/.agent-presets/exptech
 ```
 
-### 2. 使用 DSH 內部指令
-
+#### B. 使用 DSH 內部指令
 如果您已經在 DSH 環境中，可以使用以下步驟：
 
 1. 在 DSH 控制台執行：`preset_copy("standard", "exptech")`
@@ -50,13 +61,14 @@ cp -r . ~/.dsh/.agent-presets/exptech
 
 ---
 
-## 🛠️ 進階：作為「插件 (Plugin)」安裝
+### 🛠️ 方式 2：作為「插件 (Plugin)」安裝
 
 如果您**不想切換模式**，只想讓目前的 Agent 擁有 ExpTechTW 的能力（例如新增 API 工具或技能），請使用傳統的插件安裝方式：
 
 ```bash
 dsh plugin --profile web add -w github:ExpTechTW/dsh-exptech
 ```
+
 > [!NOTE]
 > **使用此方式安裝後，模式選單不會出現新選項。** 您只能透過呼叫特定的技能或工具來使用其功能。
 
@@ -67,6 +79,7 @@ dsh plugin --profile web add -w github:ExpTechTW/dsh-exptech
 **無論使用哪種方式安裝，都必須重新啟動 DSH Web Profile 才能生效！**
 
 請執行以下指令：
+
 ```bash
 dsh --profile web
 ```
