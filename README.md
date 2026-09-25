@@ -28,61 +28,51 @@
 | :--- | :--- | :--- |
 | **主要用途** | 改變 Agent 的**身份**與核心設定 (Persona, Instructions) | 增加 Agent 的**能力** (Tools, Skills) |
 | **GUI 表現** | 出現在「模式選單」中可直接切換 | 不會改變選單，僅增加可用工具 |
-| **安裝難度** | 較高 (需操作檔案系統) | 極低 (單行指令) |
+| **安裝難度** | 低 (用插件管理器安裝本 bundle) | 極低 (單行指令) |
 | **推薦情境** | 您想要完全體驗 ExpTechTW 的開發體驗 | 您只想在現有任務中偶爾使用其 API 或知識 |
 
 ---
 
 ### 📥 方式 1：啟用「ExpTechTW 模式」 (推薦)
 
-如果您希望在 DSH Web GUI 的「模式選單」中看到新選項，請使用以下任一方式將本儲存庫部署為 **Agent Preset**。
+本儲存庫是一個 **Agent Preset bundle**：`package.json` 的 `dsh.bundle.patch` 指向 `agent.cordis.yml`，其中以 Loader patch 的 `insert` 宣告了 `preset-exptech` 列（`@deepseek-ai/dsh-agent-preset`），並把全部子插件行內建在該宣告的 `plugins` 清單中。安裝後，DSH 的模式選單就會出現「ExpTechTW 模式」。
 
-#### A. 手動部署 (最穩定)
-這是最直接的方式，將模式定義直接放入 DSH 的預設目錄中：
+#### A. 透過 DSH 插件管理器安裝（推薦）
 
-```bash
-# 1. 克隆儲存庫
-git clone https://github.com/ExpTechTW/dsh-exptech.git
-cd dsh-exptech
+在 DSH Web GUI 的「設定 → 插件」頁，或由 Agent 執行 `plugin_manager` 工具 `install_bundle`，以本儲存庫的絕對路徑（bundle 目錄）安裝：
 
-# 2. 將檔案複製到您的 DSH 預設目錄
-# Windows (PowerShell)
-Copy-Item -Path "*" -Destination "$env:USERPROFILE\.dsh\.agent-presets\exptech" -Recurse -Force
-
-# macOS / Linux (Bash)
-cp -r . ~/.dsh/.agent-presets/exptech
+```text
+plugin_manager install_bundle, target = 本儲存庫的絕對路徑（例如 <工作區>/dsh-exptech）
 ```
 
-#### B. 使用 DSH 內部指令
-如果您已經在 DSH 環境中，可以使用以下步驟：
-
-1. 在 DSH 控制台執行：`preset_copy("standard", "exptech")`
-2. 將本儲存庫的內容覆蓋至該目錄。
-
----
-
-### 🛠️ 方式 2：作為「插件 (Plugin)」安裝
-
-如果您**不想切換模式**，只想讓目前的 Agent 擁有 ExpTechTW 的能力（例如新增 API 工具或技能），請使用傳統的插件安裝方式：
-
-```bash
-dsh plugin --profile web add -w github:ExpTechTW/dsh-exptech
-```
+安裝會把 bundle 加入 profile 並啟用 `preset-exptech` 宣告列；宣告啟用後，模式選單即可選擇「ExpTechTW 模式」。若宣告啟動失敗，插件頁會顯示診斷，可修正後重裝。
 
 > [!NOTE]
-> **使用此方式安裝後，模式選單不會出現新選項。** 您只能透過呼叫特定的技能或工具來使用其功能。
+> 舊版的「手動部署」方式（複製到 `~/.dsh/.agent-presets/exptech/` 目錄，或 `preset_copy("standard", "exptech")` 指令）是 **legacy preset-directory** 機制，DSH 已不再讀取該目錄；本 bundle 即為其現代替代，安裝請走 bundle 流程。
 
 ---
 
-## 🔄 重啟 (Required)
+### 🛠️ 方式 2：只在現有 Agent 中使用 ExpTechTW 能力
 
-**無論使用哪種方式安裝，都必須重新啟動 DSH Web Profile 才能生效！**
+如果不切換模式，只想讓目前的 Agent 擁有 ExpTechTW 的能力（例如呼叫 `exptech-org` / `exptech-apis` 技能或相關工具），可以：
 
-請執行以下指令：
+1. 以同一 bundle 安裝後，在新會話的模式選單切換到「ExpTechTW 模式」使用；或
+2. 手動啟用本儲存庫 `skills/exptech-org` 與 `skills/exptech-apis` 的 `SKILL.md`（將其目錄加入 `skill-filesystem` 的 `customSkillDirs`，或直接引用其內容）。
+
+> [!NOTE]
+> 使用方式 2 時，Agent 的身份與工具集不變，只有 ExpTechTW 的知識/技能被加入。
+
+---
+
+## 🔄 生效方式 (Required)
+
+**安裝後需要讓 profile 重新載入組合才能生效。** 本 profile 啟用了 HMR，`install_bundle` 會即時套用（回報 `application: applied`）；若模式選單沒有出現新選項，請重新啟動 DSH Web Profile：
 
 ```bash
 dsh --profile web
 ```
+
+新開的會話會使用更新後的定義；已經開啟的舊會話保留它啟動時使用的組合。
 
 ---
 
@@ -109,8 +99,11 @@ dsh --profile web
 ## 📁 套件結構 (Structure)
 
 ```text
-├── agent.cordis.yml    # 基於 Cordis 標準的 Agent 配置
-├── preset.yml          # 模式顯示名稱與簡介
+├── package.json        # dsh.bundle.patch → agent.cordis.yml（bundle 宣告）
+├── dsh.bundle          # bundle manifest（與 package.json 的 dsh.bundle 同步）
+├── agent.cordis.yml    # Loader patch：INSERT preset-exptech 宣告 + 子插件行
+├── preset.yml          # 模式顯示名稱與簡介（文件用途；顯示現由宣告內 name/description 提供）
+├── index.js            # legacy 安裝插件（已棄用，僅留說明）
 ├── skills/             # 內建技能
 │   ├── exptech-org/    # 組織概覽技能
 │   └── exptech-apis/   # API 知識庫技能

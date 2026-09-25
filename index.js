@@ -1,21 +1,8 @@
-const path = require('node:path');
-
-module.exports = {
-  apply(ctx) {
-    return ctx.effect(async () => {
-      const presetId = 'dsh-exptech';
-      const displayName = 'ExpTechTW 模式';
-      const sourceDir = __dirname;
-
-      console.log(`[ExpTechTW] Attempting to install preset '${presetId}' from '${sourceDir}'...`);
-
-      try {
-        await ctx.agentPresets.copy(sourceDir, presetId, displayName);
-        console.log(`[ExpTechTW] Successfully installed preset: ${displayName}`);
-      } catch (error) {
-        console.error(`[ExpTechTW] Failed to install preset '${presetId}':`, error);
-        throw error;
-      }
-    }, 'Installing ExpTechTW 模式 preset');
-  }
-};
+// Legacy preset-install plugin — superseded.
+//
+// This file used to call `ctx.agentPresets.copy(sourceDir, 'dsh-exptech', ...)` to
+// install the preset into the old `~/.dsh/.agent-presets/exptech/` directory
+// mechanism, which DSH no longer reads. The `exptech` agent preset is now
+// declared by the bundle patch `agent.cordis.yml` (`dsh.bundle.patch`) and is
+// installed/activated through `plugin_manager install_bundle` — nothing mounts
+// this entry point anymore, so it is kept only as documentation.

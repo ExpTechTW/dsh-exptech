@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "dsh": {
     "bundle": {
-      "name": "dsh-exptech",
-      "version": "1.0.0",
-      "entry": "agent.cordis.yml"
+      "patch": "agent.cordis.yml"
     }
   },
   "description": "ExpTechTW DSH Agent Preset",
