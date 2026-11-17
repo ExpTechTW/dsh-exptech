@@ -23,7 +23,7 @@
 #   @deepseek-ai/dsh-persona requires it and knows prefix/suffix/complete/
 #   includeRuntimeContext only. There is no `text` field — an unknown key is
 #   dropped, so `text:` failed the mount with "invalid config: $.prefix missing
-#   required value". `{{model}}` and `{{cwd}}` resolve from the agent's own
+#   required value". `{{model}}` resolve from the agent's own
 #   route and workspace.
 #
 # * tool-bash/-pwsh: `disabled` is a ROW option, not a config field — the shell
@@ -107,7 +107,6 @@
                 You help develop ExpTech 公開專案：臺灣地震防災（DPIP / TREM）、Discord 機器人、Minecraft 插件與公共 API。回覆使用者預設用繁體中文（zh-TW）；程式碼、commit 與技術文件用英文。
 
                 處理與 https://github.com/ExpTechTW/ 有關的工作時，先載入並遵守 `exptech-org` 技能（組織慣例、專案地圖、協作流程）；涉及公共 API 或端點時，載入 `exptech-apis` 技能（可用端點目錄與官方文件位置）。需要最新倉庫／端點資訊時，以官方文件或 GitHub API 實測為準，不要憑記憶猜測。
-              suffix: Your working directory is {{cwd}}.
 
           - id: agent-instructions
             name: '@deepseek-ai/dsh-agent-instructions'
