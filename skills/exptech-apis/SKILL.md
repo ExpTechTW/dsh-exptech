@@ -11,6 +11,7 @@ description: ExpTechTW 公共 API 的可用端點目錄、主機／區域規則�
 
 | 文件 | 位置 |
 |---|---|
+| **官方 API 文件（新，exptech.dev）** | `https://exptech.dev/docs/api/start/`（快速開始、資料授權、架構備援、使用規範、主機、支援軟體、端點生命週期、更新日誌全章節） |
 | **DPIP `api.md`**（最完整的端點對照） | `https://raw.githubusercontent.com/ExpTechTW/DPIP/main/api.md` |
 | 技術文件入口（GitHub Pages） | `https://exptechtw.github.io/api-docs/`（頁面如 `/docs/api/api/earthquake/`） |
 | 舊 API 伺服器文件 | `ExpTechTW/API` 的 `docs/main.md`、`docs/earthquake.md`（branch `master`），raw：`https://raw.githubusercontent.com/ExpTechTW/API/master/docs/...` |
@@ -141,8 +142,44 @@ description: ExpTechTW 公共 API 的可用端點目錄、主機／區域規則�
 
 **規則**：EEW/RTS → lb；report/歷史 → core；v5 氣象／tiles 清單 → core-tnn1（static 快照在 static.core-tnn1）；trem/dpip 舊端點 → api-1。挑錯 host 就是 404/401。
 
+## 官方快速開始（`exptech.dev/docs/api/start/`）
+
+以官方文件（2026-11 版）為準，補全「開始使用」流程與地震資料來源分類：
+
+**三種地震資料來源**：
+- **CWA 強震即時警報（EEW）**：中央氣象署發布的官方警報，ExpTech 僅轉發（DPIP 等 App）。依中央氣象署要求須另行簽約才能取得，官方文件不提供串接說明。
+- **TREM EEW**：TREM 系統以 TREM-net 觀測資料自行解算的地震預警，**非官方資訊**，一切以中央氣象署發布為準；依《氣象法》只提供給經 ExpTech 個別同意或簽約的特定用戶，不對不特定大眾發布。
+- **TREM-net 觀測資料**：ExpTech 自建測站網（2022 起全臺），各測站震度每秒更新；以公開 SSE 即時串流提供（**不可商用**），也用在 DPIP 等 App 的即時震度。
+
+**快速開始流程（無需驗證 → Token → 串流）**：
+
+1. **呼叫第一個 API**（不需 token）— 取得最近 5 筆地震報告：
+   ```bash
+   curl -sL "https://api.core.exptech.dev/api/v2/eq/report?limit=5"
+   ```
+   回應是 JSON 陣列，每筆一則報告（欄位見地震報告文件）。
+2. **建立 API Token**：登入 `https://manager.exptech.com.tw/login`（輸入電子郵件、點信中的登入連結），到主控台 `dashboard/tokens` 選擇權限後建立。**Token 只會顯示一次**，格式為 `et_` 開頭，請立刻存起來。權限與帶法見 `exptech-apis` 目錄＋官方 `auth/` 章節。
+3. **開啟即時串流（SSE）**：下面連到地震報告串流 topic `eq.report.v1`；有新報告時伺服器推送一則訊息：
+   ```bash
+   curl -N -H "Authorization: Bearer et_xxxxxxxx..." \
+     "https://api.lb.exptech.dev/api/v1/cwa/sse/report"
+   ```
+   - `eq.report.v1` 是**公開 topic**，不帶 token 也能連；帶 token 時用量計入帳號（主控台「用量統計」可查）。需要權限的 topic 要求 token 有對應權限，且帳號已訂閱該資源，否則伺服器拒絕。
+   - 瀏覽器 `EventSource` 不能帶 header，token 要放 query：`?token=${encodeURIComponent(token)}`。
+   - 每則資料是 **gzip 壓縮後再 base64 編碼**，要先解碼：
+     ```javascript
+     async function decode(b64) {
+       const bytes = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+       const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
+       return JSON.parse(await new Response(stream).text());
+     }
+     ```
+   - 連線開頭的 `event: info`、每 30 秒心跳、多 topic 共用一條連線與重連方式，見官方「即時串流」章節。
+
+**新舊 Base URL 對照**：官方文件使用 `api.core.exptech.dev`（core 別名，等同 `api.core-tnn1`/`api.core-tyo1` 多活節點）與 `api.lb.exptech.dev`（lb 別名）；本目錄 tier 表仍以節點為準，挑錯 host 就是 404/401。
+
 ## 使用守則
 
 1. TREM／地震資料僅供參考，**最終以中央氣象署（CWA）為主**；「此軟體僅供研究、學術及教育用途（不得營利）」，違規行為可能被列入伺服器黑名單。
-2. 端點可能變動：呼叫前先用官方文件（上面三份）確認，並用 curl 實測。
+2. 端點可能變動：呼叫前先用官方文件（`exptech.dev`、DPIP `api.md`、GitHub Pages、舊 API 文件）確認，並用 curl 實測。
 3. 本目錄是「端點目錄」不是程式碼對照：DPIP 的每支 datasource 各自帶 `ApiTier`，路徑集中於 `core/network/api_paths.dart`；要改 App 端網路層先讀 `ARCHITECTURE.md` § Networking。

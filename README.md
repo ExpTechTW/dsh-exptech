@@ -66,13 +66,16 @@ plugin_manager install_bundle, target = 本儲存庫的絕對路徑（例如 <�
 
 ## 🔄 生效方式 (Required)
 
-**安裝後需要讓 profile 重新載入組合才能生效。** 本 profile 啟用了 HMR，`install_bundle` 會即時套用（回報 `application: applied`）；若模式選單沒有出現新選項，請重新啟動 DSH Web Profile：
+**安裝後需要讓 profile 重新載入組合才能生效。** 本 profile 啟用了 HMR，`install_bundle` 會即時套用（回報 `application: applied`）；若模式選單沒有出現新選項，**請重新啟動 DSH Web Profile**：
 
 ```bash
 dsh --profile web
 ```
 
 新開的會話會使用更新後的定義；已經開啟的舊會話保留它啟動時使用的組合。
+
+> [!TIP]
+> 若安裝後看到 `application: restart-required` 或 `restartReason: "package-moved"` 的提示（例如 bundle 從系統內建位置改為指向本儲存庫目錄），這代表 DSH 核心依賴已變更，**必須重啟 DSH** 才能載入新的模式定義；重啟後模式選單才會出現「ExpTechTW 模式」。
 
 ---
 
